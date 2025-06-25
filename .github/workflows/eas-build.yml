@@ -1,29 +1,37 @@
-name: Build APK with EAS
+name: Build Android APK
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
-      - name: 🟢 Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: 📦 Install EAS CLI
+      - name: Install dependencies
+        run: npm install
+
+      - name: Install EAS CLI
         run: npm install -g eas-cli
 
-      - name: 🔐 Authenticate with Expo
-        run: eas build --platform android --non-interactive --profile preview
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Login to Expo
+        run: eas login --token ${{ secrets.EXPO_TOKEN }}
 
-      - name: ℹ️ Output build link
-        run: echo "Build complete! Download from https://expo.dev/accounts/ganeshkumar006/projects/HealthyFood/builds"
+      - name: Build Android APK
+        run: eas build --platform android --profile preview --non-interactive
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: ./build/**/*.apk
 
