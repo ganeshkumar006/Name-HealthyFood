@@ -9,14 +9,19 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/metro-runtime": "~5.0.4",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-navigation/bottom-tabs": "^7.4.1",
     "@react-navigation/native": "^7.1.14",
     "expo": "~53.0.12",
+    "expo-dev-client": "~5.2.1",
     "expo-notifications": "~0.31.3",
     "expo-status-bar": "~2.2.3",
+    "expo-updates": "~0.28.15",
     "firebase": "^9.17.2",
+    "prop-types": "^15.8.1",
     "react": "19.0.0",
+    "react-dom": "19.0.0",
     "react-native": "0.79.4",
     "react-native-chart-kit": "^6.12.0",
     "react-native-gesture-handler": "~2.24.0",
@@ -25,13 +30,26 @@
     "react-native-screens": "~4.11.1",
     "react-native-svg": "15.11.2",
     "react-native-vector-icons": "^10.2.0",
-    "expo-dev-client": "~5.2.1",
-    "react-dom": "19.0.0",
     "react-native-web": "^0.20.0",
-    "@expo/metro-runtime": "~5.0.4"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "@babel/eslint-parser": "^7.27.5",
+    "@babel/preset-react": "^7.27.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.37.5"
+  },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": [
+          "react-native-chart-kit",
+          "firebase",
+          "react-native-vector-icons"
+        ]
+      }
+    }
   },
   "private": true
 }

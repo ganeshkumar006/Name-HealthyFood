@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import PropTypes from 'prop-types'; // ✅ Add this line
 
 export default function LoginScreen({ onLogin }) {
   const [email, setEmail] = useState('');
@@ -59,6 +60,11 @@ export default function LoginScreen({ onLogin }) {
     </View>
   );
 }
+
+// ✅ Add this block at the end
+LoginScreen.propTypes = {
+  onLogin: PropTypes.func.isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {

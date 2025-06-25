@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
+  ToastAndroid,
+  Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BarChart } from 'react-native-chart-kit';
@@ -31,37 +33,50 @@ export default function MealsScreen() {
     const today = new Date().toISOString().split('T')[0];
     const saved = await AsyncStorage.getItem('mealsByDate');
     const data = saved ? JSON.parse(saved) : {};
+    const removedItem = data[today][index];
+
     data[today] = (data[today] || []).filter((_, i) => i !== index);
     await AsyncStorage.setItem('mealsByDate', JSON.stringify(data));
     setMeals(data[today]);
+
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(`${removedItem.name} deleted`, ToastAndroid.SHORT);
+    }
   };
 
   const getTotal = (field) =>
     meals.reduce((sum, item) => sum + (item[field] || 0), 0);
 
+  const renderItem = ({ item, index }) => (
+    <View style={styles.item}>
+      <View>
+        <Text style={styles.food}>{item.name}</Text>
+        <Text style={styles.nutrition}>
+          {item.calories} cal | P: {item.protein} | C: {item.carbs} | F: {item.fat}
+        </Text>
+      </View>
+      <TouchableOpacity
+        onPress={() =>
+          Alert.alert('Delete?', item.name, [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Delete', onPress: () => removeMeal(index), style: 'destructive' },
+          ])
+        }
+        style={styles.deleteButton}
+      >
+        <Text style={styles.deleteText}>✖</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Today's Meals 🍽️</Text>
+      <Text style={styles.title}>Today&apos;s Meals 🍽️</Text>
 
       <FlatList
         data={meals}
         keyExtractor={(_, index) => index.toString()}
-        renderItem={({ item, index }) => (
-          <TouchableOpacity
-            style={styles.item}
-            onLongPress={() =>
-              Alert.alert('Delete?', item.name, [
-                { text: 'Cancel' },
-                { text: 'Delete', onPress: () => removeMeal(index) },
-              ])
-            }
-          >
-            <Text style={styles.food}>{item.name}</Text>
-            <Text style={styles.nutrition}>
-              {item.calories} cal | P: {item.protein} | C: {item.carbs} | F: {item.fat}
-            </Text>
-          </TouchableOpacity>
-        )}
+        renderItem={renderItem}
       />
 
       <View style={styles.totals}>
@@ -109,8 +124,20 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 5,
     borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   food: { fontSize: 18, fontWeight: 'bold' },
   nutrition: { fontSize: 14, color: '#555' },
+  deleteButton: {
+    paddingHorizontal: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deleteText: {
+    fontSize: 20,
+    color: 'red',
+  },
   totals: { marginTop: 20 },
 });

@@ -8,33 +8,40 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.ganeshkumarbadugu.HealthyFood"
+      "package": "com.ganeshkumarbadugu.HealthyFood",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
     },
     "plugins": [
       "expo-notifications"
     ],
+    "owner": "ganeshkumar006",
     "extra": {
       "eas": {
-        "projectId": "b375c367-e71a-42fe-8adc-7e569ecc45e5"
+        "projectId": "1c7851ad-9df8-4d97-9841-7a46a38626c1"
       }
     },
-    "owner": "ganeshkumar006"
+    "updates": {
+      "url": "https://u.expo.dev/1c7851ad-9df8-4d97-9841-7a46a38626c1"
+    }
   }
 }
 
