@@ -33,13 +33,14 @@ export default function MealsScreen() {
     const today = new Date().toISOString().split('T')[0];
     const saved = await AsyncStorage.getItem('mealsByDate');
     const data = saved ? JSON.parse(saved) : {};
-    const removedItem = data[today][index];
+    const currentMeals = data[today] || [];
 
-    data[today] = (data[today] || []).filter((_, i) => i !== index);
+    const removedItem = currentMeals[index];
+    data[today] = currentMeals.filter((_, i) => i !== index);
     await AsyncStorage.setItem('mealsByDate', JSON.stringify(data));
     setMeals(data[today]);
 
-    if (Platform.OS === 'android') {
+    if (Platform.OS === 'android' && removedItem) {
       ToastAndroid.show(`${removedItem.name} deleted`, ToastAndroid.SHORT);
     }
   };
@@ -69,9 +70,16 @@ export default function MealsScreen() {
     </View>
   );
 
+  const chartData = [
+    getTotal('calories'),
+    getTotal('protein'),
+    getTotal('carbs'),
+    getTotal('fat'),
+  ];
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Today&apos;s Meals 🍽️</Text>
+      <Text style={styles.title}>Today's Meals 🍽️</Text>
 
       <FlatList
         data={meals}
@@ -89,16 +97,7 @@ export default function MealsScreen() {
       <BarChart
         data={{
           labels: ['Cal', 'Protein', 'Carbs', 'Fat'],
-          datasets: [
-            {
-              data: [
-                getTotal('calories'),
-                getTotal('protein'),
-                getTotal('carbs'),
-                getTotal('fat'),
-              ],
-            },
-          ],
+          datasets: [{ data: chartData }],
         }}
         width={Dimensions.get('window').width - 40}
         height={220}

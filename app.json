@@ -3,10 +3,10 @@
     "name": "HealthyFood",
     "slug": "HealthyFood",
     "version": "1.0.0",
+    "entryPoint": "./index.js",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
     "splash": {
       "image": "./assets/icon.png",
       "resizeMode": "contain",
@@ -25,14 +25,13 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.ganeshkumarbadugu.HealthyFood",
-      "runtimeVersion": "1.0.0"
+      "runtimeVersion": "1.0.0",
+      "jsEngine": "jsc"
     },
     "web": {
       "favicon": "./assets/icon.png"
     },
-    "plugins": [
-      "expo-notifications"
-    ],
+    "plugins": ["expo-notifications"],
     "owner": "ganeshkumar006",
     "extra": {
       "eas": {
